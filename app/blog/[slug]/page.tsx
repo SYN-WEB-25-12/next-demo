@@ -1,8 +1,14 @@
-export default function Page() {
+export default async function Page({ params }: { params: Promise<{slug: string}>}) {
+    const { slug } = await params;
+    const title = capitalizeFirstLetter(slug)
     return (
         <div>
-            <h1>Article</h1>
+            <h1>{title}</h1>
             <p>Paragraph</p>
         </div>
     )
+}
+
+function capitalizeFirstLetter(val: string) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
