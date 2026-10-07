@@ -6,6 +6,12 @@ import { usePathname } from "next/navigation";
 export default function NavBar() {
     const pathname = usePathname();
 
+    const links = [
+        { href: "/authors/", label: "Authors" },
+        { href: "/blog/", label: "Posts" },
+        { href: "/login/", label: "Login" }
+    ]
+
     return (
         <nav className="flex text-sm px-4 my-2 bg-gray-200">
           <Link href="/" className="w-full">
@@ -13,13 +19,14 @@ export default function NavBar() {
           </Link>
           <ul className="flex flex-row gap-2 ">
             <li>
-                { pathname === "/blog/"
-                    ? "Blog"
-                    : (
-                        <Link href="/blog" className="text-blue-600">
-                            Blog
-                        </Link>
-                    )
+                {
+                    links.map(({href, label}) => pathname === href
+                        ? label
+                        : (
+                            <Link key={href} href={href} className="text-blue-600">
+                                {label}
+                            </Link>
+                        ))
                 }
             </li>
           </ul>
