@@ -17,18 +17,22 @@ export default function NavBar() {
           <Link href="/" className="w-full">
             <div>Next Demo</div>
           </Link>
-          <ul className="flex flex-row gap-2 ">
-            <li>
+          <ul className="flex flex-row gap-2">
                 {
-                    links.map(({href, label}) => pathname === href
-                        ? label
-                        : (
-                            <Link key={href} href={href} className="text-blue-600">
-                                {label}
-                            </Link>
-                        ))
+                    links.map(({href, label}) => (
+                        <li key={href}> 
+                            {
+                                pathname === href
+                                ? label
+                                : (
+                                    <Link key={href} href={href} className="text-blue-600">
+                                        {label}
+                                    </Link>
+                                )
+                            }
+                        </li>
+                    ))
                 }
-            </li>
           </ul>
         </nav>
 
