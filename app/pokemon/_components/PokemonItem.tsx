@@ -6,7 +6,12 @@ export default async function PokemonItem({ url }: { url: string }) {
     const data = await fetch(url)
     const { name, weight, height } = await data.json() as PokemonDetailDTO
 
-    await setTimeout(randomInt(1000))
+    const r = randomInt(1000)
+    await setTimeout(r)
+
+    if (r % 5 === 0) {
+        throw Error("This pokemon causes an error.")
+    }
 
     return (
         <>
