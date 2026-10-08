@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { PokemonMainDTO } from "../_types/Pokemon";
 import PokemonItem from "./PokemonItem";
+import PokemonSkeleton from "./PokemonSkeleton";
 
 export default async function PokemonList() {
   const response = await fetch('https://pokeapi.co/api/v2/pokemon');
@@ -8,7 +10,11 @@ export default async function PokemonList() {
   return (
     <div className="flex flex-col items-center justify-center gap-2">
       {pokemon?.map(({ url }) => (
-        <PokemonItem key={url} url={url} />
+        <div key={url} className="min-h-25 w-50 border m-2">
+          <Suspense fallback={<PokemonSkeleton/>} >
+            <PokemonItem url={url} />
+          </Suspense>
+        </div>
       ))}
     </div>
   );
