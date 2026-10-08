@@ -10,7 +10,7 @@ export default async function PokemonItem({ url }: { url: string }) {
 
     return (
         <>
-            <h1 className="text-lg">{name}</h1>
+            <h4 className="text-lg">{name}</h4>
             <p className="text-sm">Weight: {weight}</p>
             <p className="text-sm">Height: {height}</p>
         </>
