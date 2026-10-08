@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-// import { setTimeout } from "timers/promises";
 import type { Post } from "../Post"
 import postsUntyped from "../posts.json"
 
