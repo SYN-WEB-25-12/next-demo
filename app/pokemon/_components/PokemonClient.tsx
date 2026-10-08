@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Pokemon } from "../_types/Pokemon";
+import { setTimeout } from "timers/promises";
 
 export default function PokemonClient() {
     const [pokemon, setPokemon] = useState<Pokemon[]>([])
@@ -10,10 +11,7 @@ export default function PokemonClient() {
         (async () => {
             const response = await fetch('https://pokeapi.co/api/v2/pokemon');
             const { results: pokemon }: { results: Pokemon[] } = await response.json();
-              // Simuliere langsame UI.
-            await new Promise((resolve) => {
-                setTimeout(resolve, 4000);
-            });
+            await setTimeout(4000) // Simuliere langsame UI.
             setPokemon(pokemon)
         })()
     }, [])
