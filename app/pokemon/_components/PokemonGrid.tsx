@@ -8,9 +8,9 @@ export default async function PokemonList() {
   const { results: pokemon }: { results: PokemonMainDTO[] } = await response.json();
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2">
+    <div className="grid grid-cols-5 items-center justify-center gap-2">
       {pokemon?.map(({ url, name }) => (
-        <div key={url} className="min-h-25 w-50 border m-2">
+        <div key={url} className="min-h-25 w-50 border m-2 p-2">
           <Suspense fallback={
             <PokemonPlaceholder name={name}/>
           } >
