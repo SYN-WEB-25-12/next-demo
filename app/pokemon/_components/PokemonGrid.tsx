@@ -2,7 +2,8 @@ import { Suspense } from "react";
 import { PokemonMainDTO } from "../_types/Pokemon";
 import PokemonItem from "./PokemonItem";
 import PokemonPlaceholder from "./PokemonPlaceholder";
-import ErrorBoundary from "../../_components/ErrorBoundary";
+import { ErrorBoundary } from "react-error-boundary";
+import PokemonError from "../error"
 
 export default async function PokemonList() {
   const response = await fetch('https://pokeapi.co/api/v2/pokemon');
@@ -12,12 +13,12 @@ export default async function PokemonList() {
     <div className="grid grid-cols-5 items-center justify-center gap-2">
       {pokemon?.map(({ url, name }) => (
         <div key={url} className="min-h-25 w-50 border m-2 p-2">
-          <ErrorBoundary title="Pokemon Error">
+          <ErrorBoundary fallback={<PokemonError/>}>
             <Suspense fallback={
               <PokemonPlaceholder name={name}/>
             } >
               <PokemonItem url={url} />
-            </Suspense>
+            </Suspense>            
           </ErrorBoundary>
         </div>
       ))}
