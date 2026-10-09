@@ -2,7 +2,7 @@ import { randomInt } from "crypto"
 import { PokemonDetailDTO } from "../_types/Pokemon"
 import { setTimeout } from "timers/promises"
 
-export default async function PokemonItem({ url }: { url: string }) {
+export default async function PokemonContent({ url }: { url: string }) {
     const data = await fetch(url)
     const { name, weight, height } = await data.json() as PokemonDetailDTO
 
