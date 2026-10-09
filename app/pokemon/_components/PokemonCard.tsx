@@ -6,7 +6,7 @@ import PokemonError from "../error"
 
 export default function PokemonCard({ url, name }: { url: string, name: string}) {
     return (
-        <div className="h-25 w-50 border m-2 p-2">
+        <div className="h-25 w-50 border m-2 p-2 rounded-xl">
             <ErrorBoundary fallback={<PokemonError/>}>
                 <Suspense fallback={<PokemonPlaceholder name={name}/>} >
                     <PokemonContent url={url} />
