@@ -6,7 +6,7 @@ export default async function PokemonGrid() {
   const { results: pokemon }: { results: PokemonMainDTO[] } = await response.json();
 
   return (
-    <div className="grid grid-cols-5 items-center justify-center gap-2">
+    <div className="grid grid-cols-5 items-center justify-center gap-4">
       {pokemon?.map(({ url, name }) => (
         <PokemonCard key={url} url={url} name={name} />
       ))}
