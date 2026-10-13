@@ -10,7 +10,8 @@ export default async function PokemonContent({ url }: { url: string }) {
     await setTimeout(r)
 
     if (r % 5 === 0) {
-        throw new Error("This pokemon causes an error.")
+        // Einkommentieren für zufälligen Ladefehler.
+        // throw new Error("This pokemon causes an error.")
     }
 
     return (
