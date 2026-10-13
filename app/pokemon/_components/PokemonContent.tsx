@@ -10,7 +10,7 @@ export default async function PokemonContent({ url }: { url: string }) {
     await setTimeout(r)
 
     if (r % 5 === 0) {
-        throw Error("This pokemon causes an error.")
+        throw new Error("This pokemon causes an error.")
     }
 
     return (
