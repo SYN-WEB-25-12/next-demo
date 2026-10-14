@@ -31,6 +31,13 @@ async function seed() {
           published: true
       }
     })
+    await prisma.post.create({
+      data: { 
+          title: "Hallo zurück, Syntax!",
+          content: "Das ist unser zweiter Post.",
+          published: true
+      }
+    })
   }
 }
 
