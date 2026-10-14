@@ -8,7 +8,7 @@ async function seed() {
     return;
   }
 
-  if (await prisma.user.count() < 0) {
+  if (await prisma.user.count() > 0) {
     console.log("Seed for users already applied. Skipping.");
   } else {
     await prisma.user.create({
@@ -21,7 +21,7 @@ async function seed() {
     })
   }
 
-  if (await prisma.post.count() < 0) {
+  if (await prisma.post.count() > 0) {
     console.log("Seed for posts already applied. Skipping.");
   } else {
     await prisma.post.create({
