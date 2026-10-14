@@ -8,30 +8,30 @@ async function seed() {
     return;
   }
 
-  const count = await prisma.user.count();
-
-  if (count > 0) {
-    console.log("Seed already applied. Skipping.");
-    return;
+  if (await prisma.user.count() < 0) {
+    console.log("Seed for users already applied. Skipping.");
+  } else {
+    await prisma.user.create({
+      data: { 
+        firstName: "Alice",
+        lastName: "Alisson",
+        email: "alice@test.com",
+        passwordHash: "abcd"
+      }
+    })
   }
 
-  await prisma.user.create({
-    data: { 
-      firstName: "Alice",
-      lastName: "Alisson",
-      email: "alice@test.com",
-      passwordHash: "abcd"
-    }
-  })
-
-  await prisma.post.create({
-    data: { 
-        title: "Hallo, Syntax!",
-        content: "Dies ist unser erster Post.",
-        published: true
-    }
-  })
-
+  if (await prisma.post.count() < 0) {
+    console.log("Seed for posts already applied. Skipping.");
+  } else {
+    await prisma.post.create({
+      data: { 
+          title: "Hallo, Syntax!",
+          content: "Dies ist unser erster Post.",
+          published: true
+      }
+    })
+  }
 }
 
 seed()
