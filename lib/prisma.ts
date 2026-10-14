@@ -1,22 +1,22 @@
-import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from './generated/prisma/client'
-import { PrismaNeon } from "@prisma/adapter-neon"
-import { Pool } from 'pg';
+import { PrismaNeon } from '@prisma/adapter-neon'
+import { PrismaPg } from '@prisma/adapter-pg'
 
-const globalForPrisma = global as unknown as {
-  prisma: PrismaClient
+const global = globalThis as unknown as { prisma?: PrismaClient }
+
+function createClient() {
+  const connectionString = process.env.DATABASE_URL!
+  const useNeon = connectionString.includes('neon.tech')
+
+  const adapter = useNeon
+    ? new PrismaNeon({ connectionString })
+    : new PrismaPg({ connectionString })
+
+  return new PrismaClient({ adapter })
 }
 
-const isVercel = !!process.env.VERCEL
-
-const adapter = isVercel
-  ? new PrismaNeon({ connectionString: process.env.DATABASE_URL! })
-  : new PrismaPg(new Pool({ connectionString: process.env.DATABASE_URL }))
-  
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({ adapter })
+export const prisma = global.prisma ?? createClient()
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma
+  global.prisma = prisma
 }
