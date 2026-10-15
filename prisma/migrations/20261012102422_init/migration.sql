@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Post" (
+CREATE TABLE IF NOT EXISTS "Post" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
