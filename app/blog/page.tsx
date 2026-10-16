@@ -2,8 +2,8 @@ import { createPost } from "./actions"
 import service from "./service"
 
 export default async function BlogPage() {
-  const posts = await service.getPosts()
-  
+  const postsWithAuthor = await service.getPosts()
+
   return (
     <main>
       <h1>Blog</h1>
@@ -15,12 +15,17 @@ export default async function BlogPage() {
       </form>
 
       <ul>
-        {posts.map(post => (
-          <li key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-          </li>
-        ))}
+        {postsWithAuthor.map(post => {
+          const author = post.user
+          const authorName = [author?.firstName, author?.lastName].join(" ") ?? "Unknown"
+          return (
+            <li key={post.id}>
+              <h2>{post.title}</h2>
+              <p>{post.content}</p>
+              <small>{authorName}</small>
+            </li>
+          )
+        })}
       </ul>
     </main>
   )

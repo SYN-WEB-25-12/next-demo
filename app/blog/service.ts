@@ -12,7 +12,8 @@ async function createPost(title: string, content: string) {
 
 async function getPosts() {
     return await prisma.post.findMany({
-        orderBy: { createdAt: "desc" }
+        orderBy: { createdAt: "desc" },
+        include: { user: true }
     })
 }
 
