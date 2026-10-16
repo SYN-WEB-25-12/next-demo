@@ -11,3 +11,9 @@ export async function createPost(formData: FormData) {
 
   revalidatePath("/blog")
 }
+
+export async function deletePost(id: number) {
+  await service.deletePost(id, null)
+
+  revalidatePath("/blog")
+}

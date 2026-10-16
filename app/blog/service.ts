@@ -17,9 +17,26 @@ async function getPosts() {
     })
 }
 
+async function getPost(id: number) {
+    return await prisma.post.findFirst({
+        where: { id }
+    })
+}
+
+async function deletePost(id: number, authorId: number | null) {
+    const post = await getPost(id)
+    if (post?.userId !== authorId) {
+        return
+    }
+    return prisma.post.delete({
+        where: { id }
+    })
+}
+
 const exports = {
     createPost,
-    getPosts
+    getPosts,
+    deletePost
 }
 
 export default exports 
