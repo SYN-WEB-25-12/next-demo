@@ -7,7 +7,7 @@ export async function createPost(formData: FormData) {
   const title = formData.get("title") as string
   const content = formData.get("content") as string
 
-  service.createPost(title, content)
+  await service.createPost(title, content)
 
   revalidatePath("/blog")
 }
