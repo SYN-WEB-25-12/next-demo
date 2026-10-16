@@ -1,11 +1,9 @@
 import { createPost } from "./actions"
-import { prisma } from "@/lib/prisma"
+import service from "./service"
 
 export default async function BlogPage() {
-  const posts = await prisma.post.findMany({
-    orderBy: { createdAt: "desc" }
-  })
-
+  const posts = await service.getPosts()
+  
   return (
     <main>
       <h1>Blog</h1>
