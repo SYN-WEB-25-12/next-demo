@@ -9,17 +9,19 @@ export default async function BlogPage() {
     <main>
       <h1>Blog</h1>
 
-      <form action={createPost}>
-        <input name="title" placeholder="Title" />
-        <textarea name="content" placeholder="Content" />
-        <button type="submit">Create</button>
-      </form>
-
       <ul>
         {postsWithAuthor.map(postWithAuthor => (
           <PostWithAuthorListItem key={postWithAuthor.id} {...postWithAuthor} />
         ))}
       </ul>
+
+      <hr className="my-8"/>
+      <form action={createPost} className="flex flex-col">
+        <input name="title" placeholder="Title" />
+        <textarea name="content" placeholder="Content" />
+        <button type="submit">Create</button>
+      </form>
+
     </main>
   )
 }
