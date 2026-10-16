@@ -1,7 +1,9 @@
 import Link from "next/link";
-import posts from "../posts.json"
+import service from "../service"
 
-export default function Layout({ children }: LayoutProps<"/blog/[slug]">) {
+export default async function Layout({ children }: LayoutProps<"/blog/[id]">) {
+    const posts = await service.getPosts()
+    
     return (
         <div className="flex">
             <div className="w-full">
@@ -11,9 +13,9 @@ export default function Layout({ children }: LayoutProps<"/blog/[slug]">) {
                 <h3 className="text-lg pb-4">Latest Posts</h3>
                 <ul className="flex flex-col gap-1">
                 {
-                    posts.map(({slug, title}) => (
-                        <li key={slug}>
-                            <Link href={`/blog/${slug}`}>{title}</Link>
+                    posts.map(({id, title}) => (
+                        <li key={id}>
+                            <Link href={`/blog/${id}`}>{title}</Link>
                         </li>
                     ))
                 }

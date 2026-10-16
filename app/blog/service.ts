@@ -36,6 +36,7 @@ async function deletePost(id: number, authorId: number | null) {
 const exports = {
     createPost,
     getPosts,
+    getPost,
     deletePost
 }
 
