@@ -2,14 +2,25 @@ services:
   database:
     image: postgres:15
     container_name: prisma_demo_db
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: prisma_demo_db
+    env_file: .env.docker-compose
     ports:
       - "5432:5432"
     volumes:
       - prisma_demo_db_data:/var/lib/postgresql/data
-
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file: .env.docker-compose
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - database
 volumes:
   prisma_demo_db_data:
