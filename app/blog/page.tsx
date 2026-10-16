@@ -1,4 +1,5 @@
 import { createPost } from "./actions"
+import { PostWithAuthorListItem } from "./PostWithAuthorListItem"
 import service from "./service"
 
 export default async function BlogPage() {
@@ -15,17 +16,9 @@ export default async function BlogPage() {
       </form>
 
       <ul>
-        {postsWithAuthor.map(post => {
-          const author = post.user
-          const authorName = [author?.firstName, author?.lastName].join(" ") ?? "Unknown"
-          return (
-            <li key={post.id}>
-              <h2>{post.title}</h2>
-              <p>{post.content}</p>
-              <small>{authorName}</small>
-            </li>
-          )
-        })}
+        {postsWithAuthor.map(postWithAuthor => (
+          <PostWithAuthorListItem key={postWithAuthor.id} {...postWithAuthor} />
+        ))}
       </ul>
     </main>
   )
