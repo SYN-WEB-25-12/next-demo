@@ -9,7 +9,7 @@ export default function NavBar() {
     const links = [
         { href: "/authors/", label: "Authors" },
         { href: "/blog/", label: "Posts" },
-        { href: "/login/", label: "Login" }
+        { href: "/auth/", label: "Auth" }
     ]
 
     return (
