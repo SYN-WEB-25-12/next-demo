@@ -30,6 +30,7 @@ export default function Page() {
                 <input name="last" placeholder="last" />
                 <input name="email" placeholder="email" />
                 <input name="password" placeholder="password" />
+                <button type="submit">Erstellen</button>
             </form>
         </>
     )
