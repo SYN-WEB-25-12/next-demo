@@ -15,7 +15,7 @@ export async function registerAction(formData: FormData) {
     parallelism: 1,
   });
 
-  prisma.user.create({
+  await prisma.user.create({
       data: { 
           firstName: String(formData.get("first") ?? ""),
           lastName: String(formData.get("last") ?? ""),
