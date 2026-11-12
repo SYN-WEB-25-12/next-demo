@@ -5,7 +5,7 @@ import { PrismaPg } from '@prisma/adapter-pg'
 const global = globalThis as unknown as { prisma?: PrismaClient }
 
 function createClient() {
-  const connectionString = process.env.DATABASE_URL!
+  const connectionString = process.env.DATABASE_URL || ""
   const useNeon = connectionString.includes('neon.tech')
 
   const adapter = useNeon
