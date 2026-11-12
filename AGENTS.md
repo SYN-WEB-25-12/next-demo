@@ -7,3 +7,18 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+# Agent Guidelines
+
+## Testing
+
+- An E2E test is required for all major new features.
+
+## Git & Commits
+
+- Do not create git commits automatically; only create commits when explicitly instructed to do so.
+
+## Language
+
+- Regardless of the language used in user prompts, always write code, comments, documentation, and commit messages in English.
+
