@@ -1,43 +1,50 @@
-import { prisma } from "@/lib/prisma"
+import postRepository from "./post.repository";
 
-async function createPost(title: string, content: string) {
-  await prisma.post.create({
-    data: {
-      title,
-      content,
-      published: true
-    }
-  })
+async function createPost(
+  title: string,
+  content: string,
+  userId?: number | null
+) {
+  const trimmedTitle = title.trim();
+  const trimmedContent = content.trim();
+
+  if (!trimmedTitle || !trimmedContent) {
+    throw new Error("Title and content are required.");
+  }
+
+  return await postRepository.createPost({
+    title: trimmedTitle,
+    content: trimmedContent,
+    published: true,
+    userId: userId ?? undefined,
+  });
 }
 
 async function getPosts() {
-    return await prisma.post.findMany({
-        orderBy: { createdAt: "desc" },
-        include: { user: true }
-    })
+  return await postRepository.findAllWithAuthor();
 }
 
 async function getPost(id: number) {
-    return await prisma.post.findFirst({
-        where: { id }
-    })
+  return await postRepository.findByIdWithAuthor(id);
 }
 
 async function deletePost(id: number, authorId: number | null) {
-    const post = await getPost(id)
-    if (post?.userId !== authorId) {
-        return
-    }
-    return prisma.post.delete({
-        where: { id }
-    })
+  const post = await getPost(id);
+  if (!post) return null;
+
+  // If post has an author, only that author may delete it
+  if (post.userId && post.userId !== authorId) {
+    return null;
+  }
+
+  return await postRepository.deletePostById(id);
 }
 
-const exports = {
-    createPost,
-    getPosts,
-    getPost,
-    deletePost
-}
+export const blogService = {
+  createPost,
+  getPosts,
+  getPost,
+  deletePost,
+};
 
-export default exports 
+export default blogService;

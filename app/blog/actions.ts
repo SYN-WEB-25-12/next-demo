@@ -1,19 +1,24 @@
-"use server"
+"use server";
 
-import { revalidatePath } from "next/cache"
-import service from "./service"
+import { revalidatePath } from "next/cache";
+import sessionService from "@/lib/session";
+import blogService from "./service";
 
-export async function createPost(formData: FormData) {
-  const title = formData.get("title") as string
-  const content = formData.get("content") as string
+export async function createPost(formData: FormData): Promise<void> {
+  const title = String(formData.get("title") ?? "").trim();
+  const content = String(formData.get("content") ?? "").trim();
 
-  await service.createPost(title, content)
+  if (!title || !content) return;
 
-  revalidatePath("/blog")
+  const session = await sessionService.getCurrent();
+  await blogService.createPost(title, content, session?.userId ?? null);
+
+  revalidatePath("/blog");
 }
 
-export async function deletePost(id: number) {
-  await service.deletePost(id, null)
+export async function deletePost(id: number): Promise<void> {
+  const session = await sessionService.getCurrent();
+  await blogService.deletePost(id, session?.userId ?? null);
 
-  revalidatePath("/blog")
+  revalidatePath("/blog");
 }
