@@ -3,7 +3,8 @@ import postRepository from "./post.repository";
 async function createPost(
   title: string,
   content: string,
-  userId?: number | null
+  userId?: number | null,
+  published: boolean = true
 ) {
   const trimmedTitle = title.trim();
   const trimmedContent = content.trim();
@@ -15,7 +16,7 @@ async function createPost(
   return await postRepository.createPost({
     title: trimmedTitle,
     content: trimmedContent,
-    published: true,
+    published,
     userId: userId ?? undefined,
   });
 }

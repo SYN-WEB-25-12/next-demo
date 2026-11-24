@@ -20,10 +20,12 @@ async function seed() {
           posts: {
             create: [{
               title: "Alice's first post",
-              content: "Here is what she says."
+              content: "Here is what she says.",
+              published: true
             }, {
               title: "Alice's second post",
-              content: "Even more content."
+              content: "Even more content.",
+              published: true
             }]
           }
         }
@@ -37,10 +39,12 @@ async function seed() {
           posts: {
             create: [{
               title: "Bob's first post",
-              content: "Here is what he says."
+              content: "Here is what he says.",
+              published: true
             }, {
               title: "Bob's second post",
-              content: "Even more content from him."
+              content: "Even more content from him.",
+              published: true
             }]
           }
         }

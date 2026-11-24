@@ -1,8 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
-export async function findActiveAuthors() {
+export async function findAllAuthors() {
   return await prisma.user.findMany({
-    where: { posts: { some: { published: true } } },
     select: {
       id: true,
       firstName: true,
@@ -20,5 +19,5 @@ export async function findActiveAuthors() {
   });
 }
 
-export const authorRepository = { findActiveAuthors };
+export const authorRepository = { findAllAuthors };
 export default authorRepository;

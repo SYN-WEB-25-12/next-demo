@@ -124,13 +124,27 @@ describe("Authors (E2E)", () => {
     }
   });
 
-  test("returns only authors with at least one published post", async () => {
+  test("lists every author, including those with no published posts", async () => {
     const authors = await authorsService.getAuthors();
     const resultIds = authors.map((author) => author.id);
 
     assert.ok(resultIds.includes(authorWithPublishedId));
-    assert.ok(!resultIds.includes(authorWithOnlyUnpublishedId));
-    assert.ok(!resultIds.includes(authorWithNoPostsId));
+    assert.ok(resultIds.includes(authorWithOnlyUnpublishedId));
+    assert.ok(resultIds.includes(authorWithNoPostsId));
+  });
+
+  test("reports a zero count and no publish date for authors without a published post", async () => {
+    const authors = await authorsService.getAuthors();
+
+    const onlyUnpublished = authors.find((a) => a.id === authorWithOnlyUnpublishedId);
+    assert.ok(onlyUnpublished);
+    assert.strictEqual(onlyUnpublished?.publishedPostCount, 0);
+    assert.strictEqual(onlyUnpublished?.lastPublishedAt, null);
+
+    const noPosts = authors.find((a) => a.id === authorWithNoPostsId);
+    assert.ok(noPosts);
+    assert.strictEqual(noPosts?.publishedPostCount, 0);
+    assert.strictEqual(noPosts?.lastPublishedAt, null);
   });
 
   test("reports the published post count and most recent published post date", async () => {
@@ -139,7 +153,7 @@ describe("Authors (E2E)", () => {
 
     assert.ok(author);
     assert.strictEqual(author?.publishedPostCount, 2);
-    assert.strictEqual(author?.lastPublishedAt.getTime(), now.getTime());
+    assert.strictEqual(author?.lastPublishedAt?.getTime(), now.getTime());
   });
 
   test("sorts authors alphabetically by first and last name", async () => {

@@ -14,7 +14,9 @@ export function AuthorListItem({ author }: Props) {
         {author.publishedPostCount === 1 ? "" : "s"}
       </p>
       <p className="text-xs italic text-gray-500">
-        Most recent: {formatDate(author.lastPublishedAt)}
+        {author.lastPublishedAt
+          ? `Most recent: ${formatDate(author.lastPublishedAt)}`
+          : "No published posts yet"}
       </p>
     </li>
   );

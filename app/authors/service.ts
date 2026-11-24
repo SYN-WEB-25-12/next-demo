@@ -6,15 +6,13 @@ export type Author = {
   lastName: string;
   email: string;
   publishedPostCount: number;
-  lastPublishedAt: Date;
+  lastPublishedAt: Date | null;
 };
 
 async function getAuthors(): Promise<Author[]> {
-  const rows = await authorRepository.findActiveAuthors();
+  const rows = await authorRepository.findAllAuthors();
 
   return rows.map((row) => {
-    // where: { posts: { some: { published: true } } } guarantees at least
-    // one matching post, so posts[0] is safe despite the array type.
     const mostRecentPost = row.posts[0];
     return {
       id: row.id,
@@ -22,7 +20,7 @@ async function getAuthors(): Promise<Author[]> {
       lastName: row.lastName,
       email: row.email,
       publishedPostCount: row._count.posts,
-      lastPublishedAt: mostRecentPost.createdAt,
+      lastPublishedAt: mostRecentPost?.createdAt ?? null,
     };
   });
 }

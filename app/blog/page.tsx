@@ -43,6 +43,10 @@ export default async function BlogPage() {
           rows={4}
           className="border border-gray-300 rounded px-3 py-1.5"
         />
+        <label className="flex items-center gap-2 text-sm text-gray-700">
+          <input type="checkbox" name="published" defaultChecked />
+          Published
+        </label>
         <button
           type="submit"
           className="bg-blue-600 text-white rounded px-4 py-1.5 hover:bg-blue-700 self-start cursor-pointer"
