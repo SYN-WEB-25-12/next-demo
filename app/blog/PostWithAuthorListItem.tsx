@@ -3,7 +3,7 @@
 import { Post, User } from "@/lib/generated/prisma/client";
 import { deletePost } from "./actions";
 import { formatAuthorName } from "./blog.helpers";
-import { PublishToggle } from "./PublishToggle";
+import { actionButtonBase, PostStatusBadge, PublishToggle } from "./PublishToggle";
 import Link from "next/link";
 
 type Props = Post & { user: User | null };
@@ -19,24 +19,31 @@ export function PostWithAuthorListItem({
   const authorName = formatAuthorName(user);
 
   return (
-    <li className="my-2 p-3 border border-gray-200 rounded">
-      <h2 className="text-lg font-semibold">
-        <Link href={`/blog/${id}`} className="hover:underline text-blue-600">
-          {title}
-        </Link>
-      </h2>
-      <p className="text-sm text-gray-700 my-1">{content}</p>
-      <p className="text-xs italic text-gray-500">By {authorName}</p>
+    <li className="my-2 flex flex-col gap-3 rounded-lg border border-gray-200 p-4 shadow-sm">
+      <div className="flex flex-col gap-1">
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="text-lg font-semibold">
+            <Link href={`/blog/${id}`} className="text-gray-900 transition-colors hover:text-blue-600 hover:underline">
+              {title}
+            </Link>
+          </h2>
+          {canManage ? <PostStatusBadge published={published} /> : null}
+        </div>
+        <p className="text-sm text-gray-700">{content}</p>
+        <p className="text-xs italic text-gray-500">By {authorName}</p>
+      </div>
+
       {canManage ? (
-        <PublishToggle id={id} published={published} canManage={canManage} />
-      ) : null}
-      {canManage ? (
-        <button
-          className="text-red-500 text-xs mt-2 hover:underline cursor-pointer block"
-          onClick={() => deletePost(id)}
-        >
-          Delete
-        </button>
+        <div className="flex flex-wrap items-center gap-2 border-t border-gray-100 pt-3">
+          <PublishToggle id={id} published={published} />
+          <button
+            type="button"
+            className={`${actionButtonBase} border-red-200 text-red-600 hover:border-red-300 hover:bg-red-50 focus-visible:ring-red-500`}
+            onClick={() => deletePost(id)}
+          >
+            Delete
+          </button>
+        </div>
       ) : null}
     </li>
   );

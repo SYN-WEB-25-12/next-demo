@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import service from "../service";
 import { canManagePost, formatAuthorName, isPostVisible } from "../blog.helpers";
-import { PublishToggle } from "../PublishToggle";
+import { PostStatusBadge, PublishToggle } from "../PublishToggle";
 import sessionService from "@/lib/session";
 import Link from "next/link";
 
@@ -38,12 +38,9 @@ export default async function Page({
       <h1 className="text-2xl font-bold mt-4">{post.title}</h1>
       <p className="text-sm italic text-gray-500">By {authorName}</p>
       {canManage ? (
-        <div className="mb-4">
-          <PublishToggle
-            id={post.id}
-            published={post.published}
-            canManage={canManage}
-          />
+        <div className="my-3 flex flex-wrap items-center gap-2">
+          <PostStatusBadge published={post.published} />
+          <PublishToggle id={post.id} published={post.published} />
         </div>
       ) : null}
       <p className="text-base leading-relaxed text-gray-800 whitespace-pre-wrap">
