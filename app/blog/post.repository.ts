@@ -36,11 +36,19 @@ export async function deletePostById(id: number) {
   });
 }
 
+export async function setPublishedById(id: number, published: boolean) {
+  return await prisma.post.update({
+    where: { id },
+    data: { published },
+  });
+}
+
 export const postRepository = {
   findAllWithAuthor,
   findByIdWithAuthor,
   createPost,
   deletePostById,
+  setPublishedById,
 };
 
 export default postRepository;

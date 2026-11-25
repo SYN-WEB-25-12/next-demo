@@ -58,6 +58,76 @@ describe("Post with Author (E2E)", () => {
     assert.strictEqual(found?.user?.lastName, "Lovelace");
   });
 
+  test("the author can publish and unpublish their post", async () => {
+    const unpublished = await service.createPost(
+      "Draft notes",
+      "Not public yet",
+      authorId,
+      false
+    );
+
+    try {
+      assert.strictEqual(unpublished.published, false);
+
+      const published = await service.setPublished(unpublished.id, true, authorId);
+      assert.ok(published);
+      assert.strictEqual(published.published, true);
+
+      const fetchedPublished = await service.getPost(unpublished.id);
+      assert.strictEqual(fetchedPublished?.published, true);
+
+      const draftedAgain = await service.setPublished(unpublished.id, false, authorId);
+      assert.ok(draftedAgain);
+      assert.strictEqual(draftedAgain.published, false);
+
+      const fetchedDraft = await service.getPost(unpublished.id);
+      assert.strictEqual(fetchedDraft?.published, false);
+    } finally {
+      await prisma.post.delete({ where: { id: unpublished.id } }).catch(() => {});
+    }
+  });
+
+  test("a different user cannot change the published state", async () => {
+    const otherUser = await prisma.user.create({
+      data: {
+        firstName: "Grace",
+        lastName: "Hopper",
+        email: `other_${Date.now()}@example.com`,
+        passwordHash: "dummyHash",
+      },
+    });
+
+    try {
+      const result = await service.setPublished(postId, false, otherUser.id);
+      assert.strictEqual(result, null);
+
+      const fetched = await service.getPost(postId);
+      assert.strictEqual(fetched?.published, true);
+    } finally {
+      await prisma.user.delete({ where: { id: otherUser.id } }).catch(() => {});
+    }
+  });
+
+  test("a post with no author can be published when authorId is null", async () => {
+    const anonPost = await service.createPost(
+      "Anonymous draft",
+      "No owner",
+      null,
+      false
+    );
+
+    try {
+      const published = await service.setPublished(anonPost.id, true, null);
+      assert.ok(published);
+      assert.strictEqual(published.published, true);
+
+      const fetched = await service.getPost(anonPost.id);
+      assert.strictEqual(fetched?.published, true);
+    } finally {
+      await prisma.post.delete({ where: { id: anonPost.id } }).catch(() => {});
+    }
+  });
+
   test("Anonymous post creation handles null author gracefully", async () => {
     const anonPost = await service.createPost("Anonymous Post", "No author attached", null);
     try {

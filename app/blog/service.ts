@@ -41,11 +41,24 @@ async function deletePost(id: number, authorId: number | null) {
   return await postRepository.deletePostById(id);
 }
 
+async function setPublished(id: number, published: boolean, authorId: number | null) {
+  const post = await getPost(id);
+  if (!post) return null;
+
+  // If post has an author, only that author may change its published state
+  if (post.userId && post.userId !== authorId) {
+    return null;
+  }
+
+  return await postRepository.setPublishedById(id, published);
+}
+
 export const blogService = {
   createPost,
   getPosts,
   getPost,
   deletePost,
+  setPublished,
 };
 
 export default blogService;

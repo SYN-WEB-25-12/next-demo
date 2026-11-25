@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import service from "../service";
 import { formatAuthorName } from "../blog.helpers";
+import { PublishToggle } from "../PublishToggle";
 import Link from "next/link";
 
 export default async function Page({
@@ -30,7 +31,10 @@ export default async function Page({
         &larr; Back to posts
       </Link>
       <h1 className="text-2xl font-bold mt-4">{post.title}</h1>
-      <p className="text-sm italic text-gray-500 mb-4">By {authorName}</p>
+      <p className="text-sm italic text-gray-500">By {authorName}</p>
+      <div className="mb-4">
+        <PublishToggle id={post.id} published={post.published} />
+      </div>
       <p className="text-base leading-relaxed text-gray-800 whitespace-pre-wrap">
         {post.content}
       </p>

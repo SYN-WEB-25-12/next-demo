@@ -3,11 +3,18 @@
 import { Post, User } from "@/lib/generated/prisma/client";
 import { deletePost } from "./actions";
 import { formatAuthorName } from "./blog.helpers";
+import { PublishToggle } from "./PublishToggle";
 import Link from "next/link";
 
 type Props = Post & { user: User | null };
 
-export function PostWithAuthorListItem({ id, title, content, user }: Props) {
+export function PostWithAuthorListItem({
+  id,
+  title,
+  content,
+  published,
+  user,
+}: Props) {
   const authorName = formatAuthorName(user);
 
   return (
@@ -19,6 +26,7 @@ export function PostWithAuthorListItem({ id, title, content, user }: Props) {
       </h2>
       <p className="text-sm text-gray-700 my-1">{content}</p>
       <p className="text-xs italic text-gray-500">By {authorName}</p>
+      <PublishToggle id={id} published={published} />
       <button
         className="text-red-500 text-xs mt-2 hover:underline cursor-pointer block"
         onClick={() => deletePost(id)}
