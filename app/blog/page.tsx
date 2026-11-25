@@ -1,4 +1,5 @@
 import { createPost } from "./actions";
+import { canManagePost, isPostVisible } from "./blog.helpers";
 import { PostWithAuthorListItem } from "./PostWithAuthorListItem";
 import service from "./service";
 import sessionService from "@/lib/session";
@@ -13,8 +14,16 @@ export default async function BlogPage() {
       <h1 className="text-2xl font-bold mb-4">Blog</h1>
 
       <ul className="flex flex-col gap-2">
-        {postsWithAuthor.map((postWithAuthor) => (
-          <PostWithAuthorListItem key={postWithAuthor.id} {...postWithAuthor} />
+        {postsWithAuthor
+          .filter((postWithAuthor) =>
+            isPostVisible(postWithAuthor, session?.userId)
+          )
+          .map((postWithAuthor) => (
+          <PostWithAuthorListItem
+            key={postWithAuthor.id}
+            {...postWithAuthor}
+            canManage={canManagePost(postWithAuthor.userId, session?.userId)}
+          />
         ))}
       </ul>
 

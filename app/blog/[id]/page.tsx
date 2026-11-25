@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import service from "../service";
-import { formatAuthorName } from "../blog.helpers";
+import { canManagePost, formatAuthorName, isPostVisible } from "../blog.helpers";
 import { PublishToggle } from "../PublishToggle";
+import sessionService from "@/lib/session";
 import Link from "next/link";
 
 export default async function Page({
@@ -17,12 +18,16 @@ export default async function Page({
     notFound();
   }
 
-  const post = await service.getPost(id);
+  const [post, session] = await Promise.all([
+    service.getPost(id),
+    sessionService.getCurrent(),
+  ]);
 
-  if (!post) {
+  if (!post || !isPostVisible(post, session?.userId)) {
     notFound();
   }
 
+  const canManage = canManagePost(post.userId, session?.userId);
   const authorName = formatAuthorName(post.user);
 
   return (
@@ -32,9 +37,15 @@ export default async function Page({
       </Link>
       <h1 className="text-2xl font-bold mt-4">{post.title}</h1>
       <p className="text-sm italic text-gray-500">By {authorName}</p>
-      <div className="mb-4">
-        <PublishToggle id={post.id} published={post.published} />
-      </div>
+      {canManage ? (
+        <div className="mb-4">
+          <PublishToggle
+            id={post.id}
+            published={post.published}
+            canManage={canManage}
+          />
+        </div>
+      ) : null}
       <p className="text-base leading-relaxed text-gray-800 whitespace-pre-wrap">
         {post.content}
       </p>

@@ -14,7 +14,8 @@ export function PostWithAuthorListItem({
   content,
   published,
   user,
-}: Props) {
+  canManage = false,
+}: Props & { canManage?: boolean }) {
   const authorName = formatAuthorName(user);
 
   return (
@@ -26,13 +27,17 @@ export function PostWithAuthorListItem({
       </h2>
       <p className="text-sm text-gray-700 my-1">{content}</p>
       <p className="text-xs italic text-gray-500">By {authorName}</p>
-      <PublishToggle id={id} published={published} />
-      <button
-        className="text-red-500 text-xs mt-2 hover:underline cursor-pointer block"
-        onClick={() => deletePost(id)}
-      >
-        Delete
-      </button>
+      {canManage ? (
+        <PublishToggle id={id} published={published} canManage={canManage} />
+      ) : null}
+      {canManage ? (
+        <button
+          className="text-red-500 text-xs mt-2 hover:underline cursor-pointer block"
+          onClick={() => deletePost(id)}
+        >
+          Delete
+        </button>
+      ) : null}
     </li>
   );
 }
